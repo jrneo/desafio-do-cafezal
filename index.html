@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Desafio do Cafezal — Livro Digital Interativo gamificado sobre manejo de cafezais em produção, baseado no Manual do Café (EMATER-MG).">
+  <meta name="author" content="Dirceu Nogueira de Sales Duarte Junior">
+  <meta name="theme-color" content="#2f5d3a">
+
+  <title>☕ Desafio do Cafezal — Manejo de Cafezais em Produção</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/accessibility.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#screen-root">Pular para o conteúdo principal</a>
+
+  <header id="app-header" role="banner">
+
+    <div class="header-brand">
+      <span class="brand-icon" aria-hidden="true">☕</span>
+      <div class="brand-text">
+        <p class="brand-title">Desafio do Cafezal</p>
+        <p class="brand-subtitle">Manejo de Cafezais em Produção</p>
+      </div>
+    </div>
+
+    <div class="header-hud" aria-label="Painel de progresso">
+      <div class="hud-item" aria-label="Aura acumulada">
+        <span class="hud-icon" aria-hidden="true">✨</span>
+        <span class="hud-label">Aura</span>
+        <span id="hud-aura" class="hud-value">0</span>
+      </div>
+      <div class="hud-item" aria-label="XP acumulado">
+        <span class="hud-icon" aria-hidden="true">⭐</span>
+        <span class="hud-label">XP</span>
+        <span id="hud-xp" class="hud-value">0</span>
+      </div>
+      <div class="hud-item" aria-label="Nível atual">
+        <span class="hud-icon" aria-hidden="true">🏅</span>
+        <span class="hud-label">Nível</span>
+        <span id="hud-level" class="hud-value">1</span>
+      </div>
+    </div>
+
+    <button
+      id="btn-open-a11y"
+      type="button"
+      class="btn-icon"
+      aria-label="Abrir painel de acessibilidade"
+      aria-controls="a11y-panel"
+      aria-expanded="false"
+    >
+      <span aria-hidden="true">♿</span>
+    </button>
+
+  </header>
+
+  <div id="a11y-backdrop" hidden></div>
+
+  <aside
+    id="a11y-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="a11y-title"
+    hidden
+  >
+
+    <div class="a11y-header">
+      <h2 id="a11y-title">♿ Acessibilidade</h2>
+      <button
+        id="btn-close-a11y"
+        type="button"
+        class="btn-icon"
+        aria-label="Fechar painel de acessibilidade"
+      >
+        <span aria-hidden="true">✕</span>
+      </button>
+    </div>
+
+    <div class="a11y-group">
+      <h3 class="a11y-group-title">🔊 Áudio</h3>
+
+      <button type="button" id="a11y-voice" class="a11y-toggle" aria-pressed="false">
+        <span class="toggle-icon" aria-hidden="true">🔊</span>
+        <span class="toggle-label">Leitura em voz alta</span>
+        <span class="toggle-state" aria-hidden="true">Desligado</span>
+      </button>
+
+      <button type="button" id="a11y-sfx" class="a11y-toggle" aria-pressed="false">
+        <span class="toggle-icon" aria-hidden="true">🎵</span>
+        <span class="toggle-label">Efeitos sonoros</span>
+        <span class="toggle-state" aria-hidden="true">Desligado</span>
+      </button>
+
+      <button type="button" id="a11y-ambience" class="a11y-toggle" aria-pressed="false">
+        <span class="toggle-icon" aria-hidden="true">🌿</span>
+        <span class="toggle-label">Som ambiente</span>
+        <span class="toggle-state" aria-hidden="true">Desligado</span>
+      </button>
+    </div>
+
+    <div class="a11y-group">
+      <h3 class="a11y-group-title">🎨 Aparência</h3>
+
+      <button type="button" id="a11y-theme" class="a11y-toggle" aria-pressed="false">
+        <span class="toggle-icon" aria-hidden="true">🌙</span>
+        <span class="toggle-label">Modo escuro</span>
+        <span class="toggle-state" aria-hidden="true">Desligado</span>
+      </button>
+
+      <button type="button" id="a11y-contrast" class="a11y-toggle" aria-pressed="false">
+        <span class="toggle-icon" aria-hidden="true">◐</span>
+        <span class="toggle-label">Alto contraste</span>
+        <span class="toggle-state" aria-hidden="true">Desligado</span>
+      </button>
+
+      <button type="button" id="a11y-motion" class="a11y-toggle" aria-pressed="false">
+        <span class="toggle-icon" aria-hidden="true">⏸</span>
+        <span class="toggle-label">Reduzir animações</span>
+        <span class="toggle-state" aria-hidden="true">Desligado</span>
+      </button>
+    </div>
+
+    <div class="a11y-group">
+      <h3 class="a11y-group-title">🔤 Tamanho do texto</h3>
+
+      <div class="a11y-font-controls">
+        <button
+          type="button"
+          id="a11y-font-down"
+          class="btn-secondary"
+          aria-label="Diminuir tamanho da fonte"
+        >
+          <span aria-hidden="true">A−</span>
+        </button>
+
+        <button type="button" id="a11y-font-reset" class="btn-secondary">
+          Restaurar
+        </button>
+
+        <button
+          type="button"
+          id="a11y-font-up"
+          class="btn-secondary"
+          aria-label="Aumentar tamanho da fonte"
+        >
+          <span aria-hidden="true">A+</span>
+        </button>
+      </div>
+
+      <p class="a11y-hint" id="a11y-font-status" aria-live="polite">Tamanho padrão</p>
+    </div>
+
+  </aside>
+
+  <main id="screen-root" role="main" tabindex="-1">
+    <div class="screen-loading" role="status" aria-live="polite">
+      Carregando Desafio do Cafezal…
+    </div>
+
+    <noscript>
+      <section class="screen-error" role="alert">
+        <h1>JavaScript necessário</h1>
+        <p>
+          O Desafio do Cafezal é uma experiência interativa e precisa de
+          JavaScript ativado para funcionar. Ative o JavaScript no seu
+          navegador e recarregue a página.
+        </p>
+      </section>
+    </noscript>
+  </main>
+
+  <div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  <div id="alert-region" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="js/missions.js" defer></script>
+  <script src="js/game.js" defer></script>
+  <script src="js/audio.js" defer></script>
+  <script src="js/accessibility.js" defer></script>
+  <script src="js/app.js" defer></script>
+
+</body>
+</html>
