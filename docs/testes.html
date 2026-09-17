@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testes — Desafio do Cafezal</title>
+
+  <style>
+    :root {
+      --bg: #f7f3ea;
+      --surface: #ffffff;
+      --text: #2a1e12;
+      --muted: #6b5d4a;
+      --primary: #2f5d3a;
+      --success: #2f7d4a;
+      --danger: #b23a3a;
+      --border: #e0d7c4;
+      --radius: 12px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+              "Helvetica Neue", Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    header.page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--primary);
+      flex: 1 1 auto;
+    }
+
+    .page-header .meta {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      width: 100%;
+    }
+
+    .summary {
+      padding: 16px 20px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border-left: 6px solid var(--muted);
+      margin-bottom: 20px;
+      font-size: 1rem;
+      box-shadow: 0 1px 2px rgba(42,30,18,0.06);
+    }
+
+    .summary.all-pass { border-left-color: var(--success); }
+    .summary.has-fail { border-left-color: var(--danger); }
+
+    .summary .pass-count { color: var(--success); font-weight: 700; }
+    .summary .fail-count { color: var(--danger); font-weight: 700; }
+    .summary .time { color: var(--muted); }
+
+    section.suite {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 2px rgba(42,30,18,0.06);
+    }
+
+    section.suite h2 {
+      margin: 0 0 12px;
+      font-size: 1.0625rem;
+      color: var(--primary);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    ul.tests {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li.test {
+      display: flex;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 0.9375rem;
+    }
+
+    li.test:last-child { border-bottom: none; }
+
+    li.test .icon { flex-shrink: 0; }
+    li.test .name { flex: 1 1 auto; }
+
+    li.test .dur {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    li.test.pass .name { color: var(--text); }
+    li.test.fail .name { color: var(--danger); font-weight: 600; }
+
+    li.test .error {
+      flex-basis: 100%;
+      margin-top: 4px;
+      padding: 8px 12px;
+      background: rgba(178, 58, 58, 0.08);
+      border-left: 3px solid var(--danger);
+      border-radius: 4px;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.8125rem;
+      color: var(--danger);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    button.btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 2px solid var(--primary);
+      background: var(--primary);
+      color: #ffffff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      min-height: 44px;
+    }
+
+    button.btn:hover,
+    button.btn:focus-visible {
+      background: #234a2c;
+      border-color: #234a2c;
+    }
+
+    button.btn.secondary {
+      background: var(--surface);
+      color: var(--primary);
+    }
+
+    button.btn.secondary:hover,
+    button.btn.secondary:focus-visible {
+      background: #f1ead9;
+    }
+
+    footer.page-footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8125rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .hidden-harness {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <header class="page-header">
+      <h1>🧪 Testes — Desafio do Cafezal</h1>
+      <p class="meta">
+        Suíte automatizada. Verifica módulos, integração e persistência.
+        Antes de rodar, faz backup de <code>localStorage</code> e restaura ao final.
+      </p>
+    </header>
+
+    <div id="summary" class="summary" role="status" aria-live="polite">
+      Aguardando início dos testes…
+    </div>
+
+    <div id="suites"></div>
+
+    <div class="actions">
+      <button type="button" id="btn-rerun" class="btn">🔄 Rodar novamente</button>
+      <a class="btn secondary" href="../index.html" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">
+        ← Voltar ao app
+      </a>
+    </div>
+
+    <footer class="page-footer">
+      <p>Página de testes internos. Não faz parte da experiência do usuário final.</p>
+    </footer>
+
+  </div>
+
+  <div class="hidden-harness" aria-hidden="true">
+    <span id="hud-aura">0</span>
+    <span id="hud-xp">0</span>
+    <span id="hud-level">1</span>
+    <button type="button" id="btn-open-a11y"></button>
+    <div id="a11y-backdrop"></div>
+    <aside id="a11y-panel">
+      <button type="button" id="btn-close-a11y"></button>
+      <button type="button" id="a11y-theme"></button>
+      <button type="button" id="a11y-contrast"></button>
+      <button type="button" id="a11y-motion"></button>
+      <button type="button" id="a11y-voice"></button>
+      <button type="button" id="a11y-sfx"></button>
+      <button type="button" id="a11y-ambience"></button>
+      <button type="button" id="a11y-font-down"></button>
+      <button type="button" id="a11y-font-reset"></button>
+      <button type="button" id="a11y-font-up"></button>
+      <p id="a11y-font-status"></p>
+    </aside>
+    <div id="screen-root"></div>
+    <div id="live-region"></div>
+    <div id="alert-region"></div>
+    <div id="toast-region"></div>
+  </div>
+
+  <script src="../js/missions.js"></script>
+  <script src="../js/game.js"></script>
+  <script src="../js/audio.js"></script>
+  <script src="../js/accessibility.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var suites = [];
+
+    function suite(name, fn) {
+      var tests = [];
+      suites.push({ name: name, tests: tests });
+      fn(function (testName, testFn) {
+        tests.push({ name: testName, fn: testFn });
+      });
+    }
+
+    function assert(cond, msg) {
+      if (!cond) throw new Error(msg || 'asserção falhou');
+    }
+
+    function assertEqual(actual, expected, msg) {
+      if (actual !== expected) {
+        throw new Error(
+          (msg ? msg + ': ' : '') +
+          'esperado ' + JSON.stringify(expected) +
+          ', obtido ' + JSON.stringify(actual)
+        );
+      }
+    }
+
+    function assertType(value, type, msg) {
+      if (typeof value !== type) {
+        throw new Error(
+          (msg ? msg + ': ' : '') +
+          'esperado tipo ' + type + ', obtido ' + typeof value
+        );
+      }
+    }
+
+    /* ============================================================
+     * SUÍTE 1 — Dados das missões (missions.js)
+     * ============================================================ */
+    suite('1. Dados das missões (missions.js)', function (test) {
+
+      test('window.MISSIONS existe e é um array', function () {
+        assert(Array.isArray(window.MISSIONS), 'MISSIONS não é array');
+      });
+
+      test('window.MISSIONS contém exatamente 10 missões', function () {
+        assertEqual(window.MISSIONS.length, 10);
+      });
+
+      test('IDs das missões são 1..10 na ordem', function () {
+        for (var i = 0; i < 10; i++) {
+          assertEqual(window.MISSIONS[i].id, i + 1, 'posição ' + i);
+        }
+      });
+
+      test('Cada missão tem exatamente 4 opções', function () {
+        window.MISSIONS.forEach(function (m) {
+          assertEqual(m.options.length, 4, 'Missão ' + m.id);
+        });
+      });
+
+      test('Cada missão tem exatamente 1 opção correta', function () {
+        window.MISSIONS.forEach(function (m) {
+          var count = m.options.filter(function (o) { return o.correct; }).length;
+          assertEqual(count, 1, 'Missão ' + m.id + ' tem ' + count + ' corretas');
+        });
+      });
+
+      test('Cada missão tem reward com aura > 0 e xp > 0', function () {
+        window.MISSIONS.forEach(function (m) {
+          assert(m.reward && m.reward.aura > 0, 'Missão ' + m.id + ' sem aura');
+          assert(m.reward.xp > 0, 'Missão ' + m.id + ' sem xp');
+        });
+      });
+
+      test('Cada missão tem source com title, institution e pages', function () {
+        window.MISSIONS.forEach(function (m) {
+          assert(m.source && m.source.title, 'Missão ' + m.id + ' sem title');
+          assert(m.source.institution, 'Missão ' + m.id + ' sem institution');
+          assert(m.source.pages, 'Missão ' + m.id + ' sem pages');
+        });
+      });
+
+      test('Cada missão tem characterIntro, question e feedbacks', function () {
+        window.MISSIONS.forEach(function (m) {
+          assert(m.characterIntro, 'Missão ' + m.id + ' sem characterIntro');
+          assert(m.question, 'Missão ' + m.id + ' sem question');
+          m.options.forEach(function (o, i) {
+            assert(o.text, 'Missão ' + m.id + ' opção ' + i + ' sem text');
+            assert(o.feedback, 'Missão ' + m.id + ' opção ' + i + ' sem feedback');
+          });
+        });
+      });
+
+      test('window.BOSS existe com 3 decisões', function () {
+        assert(window.BOSS, 'BOSS ausente');
+        assertEqual(window.BOSS.decisions.length, 3);
+      });
+
+      test('Cada decisão do boss tem 3 opções com exatamente 1 correta', function () {
+        window.BOSS.decisions.forEach(function (d, i) {
+          assertEqual(d.options.length, 3, 'Decisão ' + i);
+          var count = d.options.filter(function (o) { return o.correct; }).length;
+          assertEqual(count, 1, 'Decisão ' + i + ' tem ' + count + ' corretas');
+        });
+      });
+
+      test('GLOSSARY, ACHIEVEMENTS e CONTENT_THEMES têm itens válidos', function () {
+        assert(Array.isArray(window.GLOSSARY) && window.GLOSSARY.length >= 10);
+        window.GLOSSARY.forEach(function (g, i) {
+          assert(g.term && g.definition, 'Termo ' + i + ' incompleto');
+        });
+        assert(Array.isArray(window.ACHIEVEMENTS) && window.ACHIEVEMENTS.length >= 5);
+        window.ACHIEVEMENTS.forEach(function (a, i) {
+          assert(a.id && a.name && a.icon && a.description,
+                 'Conquista ' + i + ' incompleta');
+        });
+        assert(Array.isArray(window.CONTENT_THEMES) && window.CONTENT_THEMES.length >= 5);
+        window.CONTENT_THEMES.forEach(function (t, i) {
+          assert(t.id && t.title && t.summary, 'Tema ' + i + ' incompleto');
+        });
+      });
+    });
+
+    /* ============================================================
+     * SUÍTE 2 — Estado do jogo (game.js)
+     * ============================================================ */
+    suite('2. Estado do jogo (game.js)', function (test) {
+
+      test('window.Game existe com API esperada', function () {
+        assert(window.Game);
+        ['init', 'getState', 'completeMission', 'setBossResult',
+         'unlockAchievement', 'reset', 'save', 'load',
+         'isMissionUnlocked', 'getLevelFromXp', 'getProgressPercent',
+         'markGlossaryTermOpened', 'markContentThemeOpened']
+          .forEach(function (fn) {
+            assertType(window.Game[fn], 'function', 'Game.' + fn);
+          });
+      });
+
+      test('Game.reset() produz estado padrão', function () {
+        Game.reset();
+        var s = Game.getState();
+        assertEqual(s.aura, 0);
+        assertEqual(s.xp, 0);
+        assertEqual(s.completedMissions.length, 0);
+        assertEqual(s.currentMissionId, 1);
+        assertEqual(s.bossCompleted, false);
+        assertEqual(s.level, 1);
+        assertEqual(s.glossaryTermsOpened.length, 0);
+        assertEqual(s.contentThemesOpened.length, 0);
+      });
+
+      test('getState() retorna cópia (mutação externa não afeta interno)', function () {
+        Game.reset();
+        var s1 = Game.getState();
+        s1.aura = 9999;
+        var s2 = Game.getState();
+        assertEqual(s2.aura, 0);
+      });
+
+      test('completeMission(1, correta) completa e premia', function () {
+        Game.reset();
+        var m = window.MISSIONS[0];
+        var correctIdx = -1;
+        for (var i = 0; i < m.options.length; i++) {
+          if (m.options[i].correct) { correctIdx = i; break; }
+        }
+        var r = Game.completeMission(1, correctIdx);
+        assert(r.correct === true);
+        var s = Game.getState();
+        assert(s.completedMissions.indexOf(1) !== -1);
+        assertEqual(s.aura, m.reward.aura);
+        assertEqual(s.xp, m.reward.xp);
+      });
+
+      test('completeMission(1, errada) não completa nem premia', function () {
+        Game.reset();
+        var m = window.MISSIONS[0];
+        var wrongIdx = -1;
+        for (var i = 0; i < m.options.length; i++) {
+          if (!m.options[i].correct) { wrongIdx = i; break; }
+        }
+        var r = Game.completeMission(1, wrongIdx);
+        assert(r.correct === false);
+        var s = Game.getState();
+        assertEqual(s.completedMissions.length, 0);
+        assertEqual(s.aura, 0);
+        assertEqual(s.currentMissionId, 1);
+      });
+
+      test('completeMission duplicado não duplica recompensa', function () {
+        Game.reset();
+        var m = window.MISSIONS[0];
+        var idx = -1;
+        for (var i = 0; i < m.options.length; i++) {
+          if (m.options[i].correct) { idx = i; break; }
+        }
+        Game.completeMission(1, idx);
+        var aura1 = Game.getState().aura;
+        var r2 = Game.completeMission(1, idx);
+        assert(r2.alreadyCompleted === true);
+        assertEqual(Game.getState().aura, aura1);
+      });
+
+      test('completeMission com índice inválido retorna null', function () {
+        Game.reset();
+        assert(Game.completeMission(1, 99) === null);
+        assert(Game.completeMission(1, -1) === null);
+      });
+
+      test('Completar missão avança currentMissionId', function () {
+        Game.reset();
+        var m = window.MISSIONS[0];
+        var idx = -1;
+        for (var i = 0; i < m.options.length; i++) {
+          if (m.options[i].correct) { idx = i; break; }
+        }
+        Game.completeMission(1, idx);
+        assertEqual(Game.getState().currentMissionId, 2);
+      });
+
+      test('getLevelFromXp retorna nível correto', function () {
+        assertEqual(Game.getLevelFromXp(0).level, 1);
+        assertEqual(Game.getLevelFromXp(999).level, 1);
+        assertEqual(Game.getLevelFromXp(1000).level, 2);
+        assertEqual(Game.getLevelFromXp(2500).level, 3);
+        assertEqual(Game.getLevelFromXp(10000).level, 6);
+      });
+
+      test('Persistência: completeMission grava em localStorage', function () {
+        Game.reset();
+        var m = window.MISSIONS[0];
+        var idx = -1;
+        for (var i = 0; i < m.options.length; i++) {
+          if (m.options[i].correct) { idx = i; break; }
+        }
+        Game.completeMission(1, idx);
+        var raw = window.localStorage.getItem('cafezal:state');
+        assert(raw, 'nada salvo em cafezal:state');
+        var parsed = JSON.parse(raw);
+        assert(parsed.completedMissions.indexOf(1) !== -1);
+      });
+
+      test('Persistência: reload de estado restaura progresso', function () {
+        Game.reset();
+        var m = window.MISSIONS[0];
+        var idx = -1;
+        for (var i = 0; i < m.options.length; i++) {
+          if (m.options[i].correct) { idx = i; break; }
+        }
+        Game.completeMission(1, idx);
+        var auraBefore = Game.getState().aura;
+        Game.init();
+        assertEqual(Game.getState().aura, auraBefore);
+      });
+
+      test('setBossResult idempotente', function () {
+        Game.reset();
+        var r1 = Game.setBossResult(75);
+        assert(r1.alreadyCompleted === false);
+        var aura1 = Game.getState().aura;
+        var r2 = Game.setBossResult(75);
+        assert(r2.alreadyCompleted === true);
+        assertEqual(Game.getState().aura, aura1);
+      });
+
+      test('isMissionUnlocked respeita progressão', function () {
+        Game.reset();
+        assert(Game.isMissionUnlocked(1) === true);
+        assert(Game.isMissionUnlocked(2) === false);
+        assert(Game.isMissionUnlocked(11) === false);
+      });
+
+      test('unlockAchievement concede conquista válida', function () {
+        Game.reset();
+        var ok = Game.unlockAchievement('detetive-do-solo');
+        assert(ok === true);
+        assert(Game.getState().achievements.indexOf('detetive-do-solo') !== -1);
+      });
+
+      test('unlockAchievement com id inexistente retorna false', function () {
+        Game.reset();
+        var ok = Game.unlockAchievement('conquista-fantasma');
+        assert(ok === false);
+      });
+
+      /* ---------- Novos: exploração (glossário / conteúdos) ---------- */
+
+      test('markGlossaryTermOpened desbloqueia "curioso" após 5 termos', function () {
+        Game.reset();
+        Game.markGlossaryTermOpened('amostra composta');
+        Game.markGlossaryTermOpened('calagem');
+        Game.markGlossaryTermOpened('gessagem');
+        Game.markGlossaryTermOpened('poda');
+        var r = Game.markGlossaryTermOpened('talhão');
+        assert(r.unlocked === true, 'unlocked deveria ser true');
+        assert(Game.getState().achievements.indexOf('curioso') !== -1,
+               'curioso não concedido');
+      });
+
+      test('markGlossaryTermOpened não conta termo repetido', function () {
+        Game.reset();
+        Game.markGlossaryTermOpened('calagem');
+        Game.markGlossaryTermOpened('calagem');
+        Game.markGlossaryTermOpened('calagem');
+        var s = Game.getState();
+        assertEqual(s.glossaryTermsOpened.length, 1);
+      });
+
+      test('markContentThemeOpened desbloqueia "estudioso" após 3 temas', function () {
+        Game.reset();
+        Game.markContentThemeOpened('tema-1');
+        Game.markContentThemeOpened('tema-2');
+        var r = Game.markContentThemeOpened('tema-3');
+        assert(r.unlocked === true, 'unlocked deveria ser true');
+        assert(Game.getState().achievements.indexOf('estudioso') !== -1,
+               'estudioso não concedido');
+      });
+
+      test('markContentThemeOpened não conta tema repetido', function () {
+        Game.reset();
+        Game.markContentThemeOpened('tema-1');
+        Game.markContentThemeOpened('tema-1');
+        var s = Game.getState();
+        assertEqual(s.contentThemesOpened.length, 1);
+      });
+    });
+
+    /* ============================================================
+     * SUÍTE 3 — Áudio (audio.js)
+     * ============================================================ */
+    suite('3. Áudio (audio.js)', function (test) {
+
+      test('window.Audio existe com API esperada', function () {
+        assert(window.Audio);
+        ['init', 'speak', 'stopSpeak', 'playSfx', 'setVoice',
+         'setSfx', 'setAmbience', 'isVoiceOn', 'isSfxOn', 'isAmbienceOn']
+          .forEach(function (fn) {
+            assertType(window.Audio[fn], 'function', 'Audio.' + fn);
+          });
+      });
+
+      test('Audio.isSupported() retorna objeto com speech e audio', function () {
+        var s = Audio.isSupported();
+        assert(typeof s.speech === 'boolean');
+        assert(typeof s.audio === 'boolean');
+      });
+
+      test('setVoice(true) → isVoiceOn() === true', function () {
+        Audio.setVoice(true);
+        assertEqual(Audio.isVoiceOn(), true);
+      });
+
+      test('setVoice(false) → isVoiceOn() === false', function () {
+        Audio.setVoice(false);
+        assertEqual(Audio.isVoiceOn(), false);
+      });
+
+      test('setSfx(true) → isSfxOn() === true', function () {
+        Audio.setSfx(true);
+        assertEqual(Audio.isSfxOn(), true);
+      });
+
+      test('playSfx com nome inválido retorna false sem lançar', function () {
+        Audio.setSfx(true);
+        var r = Audio.playSfx('nome-inexistente');
+        assertEqual(r, false);
+      });
+
+      test('speak com voz desligada retorna false', function () {
+        Audio.setVoice(false);
+        var r = Audio.speak('teste');
+        assertEqual(r, false);
+      });
+
+      test('Preferências de áudio persistem em cafezal:prefs', function () {
+        Audio.setVoice(true);
+        var raw = window.localStorage.getItem('cafezal:prefs');
+        assert(raw);
+        var p = JSON.parse(raw);
+        assert(p.voice === true);
+      });
+    });
+
+    /* ============================================================
+     * SUÍTE 4 — Acessibilidade (accessibility.js)
+     * ============================================================ */
+    suite('4. Acessibilidade (accessibility.js)', function (test) {
+
+      test('window.A11y existe com API esperada', function () {
+        assert(window.A11y);
+        ['init', 'setTheme', 'toggleContrast', 'toggleReduceMotion',
+         'setFontScale', 'applyPrefs', 'getPrefs', 'refresh']
+          .forEach(function (fn) {
+            assertType(window.A11y[fn], 'function', 'A11y.' + fn);
+          });
+      });
+
+      test('getPrefs() retorna objeto com todos os campos', function () {
+        var p = A11y.getPrefs();
+        ['theme', 'contrast', 'reduceMotion', 'fontScale',
+         'voice', 'sfx', 'ambience']
+          .forEach(function (k) {
+            assert(k in p, 'A11y.getPrefs faltando ' + k);
+          });
+      });
+
+      test('setTheme("dark") aplica classe theme-dark em html', function () {
+        A11y.setTheme('dark');
+        assert(document.documentElement.classList.contains('theme-dark'));
+        assertEqual(document.documentElement.getAttribute('data-theme'), 'dark');
+      });
+
+      test('setTheme("light") remove classe theme-dark', function () {
+        A11y.setTheme('light');
+        assert(!document.documentElement.classList.contains('theme-dark'));
+        assertEqual(document.documentElement.getAttribute('data-theme'), 'light');
+      });
+
+      test('toggleContrast() alterna a classe contrast-high', function () {
+        A11y.setTheme('light');
+        if (document.documentElement.classList.contains('contrast-high')) {
+          A11y.toggleContrast();
+        }
+        var before = document.documentElement.classList.contains('contrast-high');
+        A11y.toggleContrast();
+        var after = document.documentElement.classList.contains('contrast-high');
+        assert(before !== after, 'contrast-high não alternou');
+      });
+
+      test('setFontScale("lg") aplica classe font-lg', function () {
+        A11y.setFontScale('lg');
+        assert(document.documentElement.classList.contains('font-lg'));
+      });
+
+      test('setFontScale("invalido") não altera a escala atual', function () {
+        A11y.setFontScale('md');
+        A11y.setFontScale('gigante');
+        assertEqual(A11y.getPrefs().fontScale, 'md');
+      });
+
+      test('applyPrefs aplica múltiplas preferências', function () {
+        A11y.applyPrefs({ theme: 'dark', fontScale: 'xl', reduceMotion: true });
+        var p = A11y.getPrefs();
+        assertEqual(p.theme, 'dark');
+        assertEqual(p.fontScale, 'xl');
+        assertEqual(p.reduceMotion, true);
+        assert(document.documentElement.classList.contains('reduce-motion'));
+        assert(document.documentElement.classList.contains('font-xl'));
+      });
+
+      test('A11y.setTheme sincroniza prefs em cafezal:prefs', function () {
+        A11y.setTheme('dark');
+        var raw = window.localStorage.getItem('cafezal:prefs');
+        var p = JSON.parse(raw);
+        assertEqual(p.theme, 'dark');
+      });
+    });
+
+    /* ============================================================
+     * SUÍTE 5 — Orquestração (app.js)
+     * ============================================================ */
+    suite('5. Orquestração (app.js)', function (test) {
+
+      test('window.App existe com API esperada', function () {
+        assert(window.App);
+        ['init', 'navigate', 'updateHUD', 'announce', 'showToast']
+          .forEach(function (fn) {
+            assertType(window.App[fn], 'function', 'App.' + fn);
+          });
+      });
+
+      test('App.screens contém todas as telas', function () {
+        var s = App.screens;
+        ['HOME', 'MAP', 'MISSION', 'BOSS', 'CONTENTS', 'GLOSSARY',
+         'ACHIEVEMENTS', 'ABOUT', 'TRANSPARENCY', 'FINAL']
+          .forEach(function (k) {
+            assert(s[k], 'App.screens.' + k + ' ausente');
+          });
+      });
+
+      test('App.navigate("map") renderiza a seção do mapa', function () {
+        App.navigate('map');
+        var el = document.querySelector('#screen-root [data-screen="map"]');
+        assert(el, 'tela do mapa não renderizada');
+      });
+
+      test('App.navigate("home") renderiza a home', function () {
+        App.navigate('home');
+        var el = document.querySelector('#screen-root [data-screen="home"]');
+        assert(el, 'home não renderizada');
+      });
+
+      test('App.updateHUD() reflete estado do jogo', function () {
+        Game.reset();
+        Game.addAura(42);
+        Game.addXp(500);
+        App.updateHUD();
+        var auraEl = document.getElementById('hud-aura');
+        var xpEl = document.getElementById('hud-xp');
+        assertEqual(auraEl.textContent, '42');
+        assertEqual(xpEl.textContent, '500');
+      });
+
+      test('App.showToast adiciona elemento em #toast-region', function () {
+        var region = document.getElementById('toast-region');
+        var before = region.children.length;
+        App.showToast('Teste', 'info');
+        var after = region.children.length;
+        assert(after > before, 'toast não foi adicionado');
+      });
+    });
+
+    /* ============================================================
+     * SUÍTE 6 — Integração entre módulos
+     * ============================================================ */
+    suite('6. Integração entre módulos', function (test) {
+
+      test('Fluxo completo: 10 missões até Guardião do Cafezal', function () {
+        Game.reset();
+        for (var i = 0; i < 10; i++) {
+          var m = window.MISSIONS[i];
+          var idx = -1;
+          for (var j = 0; j < m.options.length; j++) {
+            if (m.options[j].correct) { idx = j; break; }
+          }
+          Game.completeMission(m.id, idx);
+        }
+        var s = Game.getState();
+        assertEqual(s.completedMissions.length, 10);
+        assert(Game.isBossUnlocked(), 'boss não desbloqueado');
+        assert(s.achievements.indexOf('guardiao-do-cafezal') !== -1,
+               'guardiao-do-cafezal ausente');
+        assert(s.achievements.indexOf('mestre-do-talhao') !== -1,
+               'mestre-do-talhao ausente');
+      });
+
+      test('Boss Final concede lenda-do-cafezal', function () {
+        var r = Game.setBossResult(75);
+        var s = Game.getState();
+        assert(s.bossCompleted === true);
+        assert(s.achievements.indexOf('lenda-do-cafezal') !== -1);
+        assertEqual(Game.getProgressPercent(), 100);
+      });
+
+      test('A11y.refresh() reflete estado do Audio nos toggles', function () {
+        Audio.setVoice(true);
+        A11y.refresh();
+        var btn = document.getElementById('a11y-voice');
+        assertEqual(btn.getAttribute('aria-pressed'), 'true');
+      });
+
+      test('A11y.toggleVoice sincroniza com Audio', function () {
+        Audio.setVoice(false);
+        A11y.refresh();
+        var btn = document.getElementById('a11y-voice');
+        btn.click();
+        assertEqual(Audio.isVoiceOn(), true);
+        btn.click();
+        assertEqual(Audio.isVoiceOn(), false);
+      });
+
+      test('Reset limpa state mas preserva prefs', function () {
+        A11y.setTheme('dark');
+        Game.reset();
+        assertEqual(Game.getState().aura, 0);
+        var prefs = A11y.getPrefs();
+        assertEqual(prefs.theme, 'dark');
+      });
+    });
+
+    /* ============================================================
+     * Runner
+     * ============================================================ */
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return {
+          '&': '&amp;', '<': '&lt;', '>': '&gt;',
+          '"': '&quot;', "'": '&#39;'
+        }[c];
+      });
+    }
+
+    function backupStorage() {
+      return {
+        state: window.localStorage.getItem('cafezal:state'),
+        prefs: window.localStorage.getItem('cafezal:prefs')
+      };
+    }
+
+    function restoreStorage(b) {
+      if (b.state === null) window.localStorage.removeItem('cafezal:state');
+      else window.localStorage.setItem('cafezal:state', b.state);
+      if (b.prefs === null) window.localStorage.removeItem('cafezal:prefs');
+      else window.localStorage.setItem('cafezal:prefs', b.prefs);
+    }
+
+    function runAll() {
+      var resultsEl = document.getElementById('suites');
+      var summaryEl = document.getElementById('summary');
+      resultsEl.innerHTML = '';
+
+      var backup = backupStorage();
+      var htmlClassBackup = document.documentElement.className;
+      var htmlAttrs = {};
+      ['data-theme', 'data-contrast', 'data-motion', 'data-font-scale']
+        .forEach(function (a) {
+          htmlAttrs[a] = document.documentElement.getAttribute(a);
+        });
+
+      var totalPassed = 0;
+      var totalFailed = 0;
+      var startTime = Date.now();
+
+      suites.forEach(function (s) {
+        var section = document.createElement('section');
+        section.className = 'suite';
+        var h = document.createElement('h2');
+        h.textContent = s.name;
+        section.appendChild(h);
+
+        var ul = document.createElement('ul');
+        ul.className = 'tests';
+
+        s.tests.forEach(function (t) {
+          var li = document.createElement('li');
+          var tStart = Date.now();
+          try {
+            t.fn();
+            var d = Date.now() - tStart;
+            li.className = 'test pass';
+            li.innerHTML =
+              '<span class="icon">✅</span>' +
+              '<span class="name">' + escapeHtml(t.name) + '</span>' +
+              '<span class="dur">' + d + 'ms</span>';
+            totalPassed++;
+          } catch (e) {
+            var d2 = Date.now() - tStart;
+            li.className = 'test fail';
+            li.innerHTML =
+              '<span class="icon">❌</span>' +
+              '<span class="name">' + escapeHtml(t.name) + '</span>' +
+              '<span class="dur">' + d2 + 'ms</span>' +
+              '<div class="error">' + escapeHtml(e && e.message ? e.message : String(e)) + '</div>';
+            totalFailed++;
+          }
+          ul.appendChild(li);
+        });
+
+        section.appendChild(ul);
+        resultsEl.appendChild(section);
+      });
+
+      restoreStorage(backup);
+      document.documentElement.className = htmlClassBackup;
+      Object.keys(htmlAttrs).forEach(function (a) {
+        if (htmlAttrs[a] === null) document.documentElement.removeAttribute(a);
+        else document.documentElement.setAttribute(a, htmlAttrs[a]);
+      });
+
+      var dur = Date.now() - startTime;
+      var total = totalPassed + totalFailed;
+      summaryEl.className = 'summary ' + (totalFailed === 0 ? 'all-pass' : 'has-fail');
+      summaryEl.innerHTML =
+        '<strong>' + total + ' testes</strong> · ' +
+        '<span class="pass-count">' + totalPassed + ' passaram</span> · ' +
+        '<span class="fail-count">' + totalFailed + ' falharam</span> · ' +
+        '<span class="time">' + dur + ' ms</span>' +
+        (totalFailed === 0 ? ' 🎉' : '');
+    }
+
+    window.addEventListener('load', function () {
+      window.setTimeout(runAll, 150);
+    });
+
+    document.getElementById('btn-rerun').addEventListener('click', function () {
+      runAll();
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

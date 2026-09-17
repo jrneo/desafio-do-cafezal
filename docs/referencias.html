@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Dirceu Nogueira de Sales Duarte Junior">
+  <meta name="description" content="Referências, ficha técnica e transparência sobre uso de IA do projeto Desafio do Cafezal.">
+  <title>Referências — Desafio do Cafezal</title>
+
+  <style>
+    :root {
+      --color-bg: #f7f3ea;
+      --color-surface: #ffffff;
+      --color-surface-alt: #f1ead9;
+      --color-text: #2a1e12;
+      --color-text-muted: #6b5d4a;
+      --color-primary: #2f5d3a;
+      --color-primary-dark: #234a2c;
+      --color-accent: #c9a227;
+      --color-brown: #6b4423;
+      --color-border: #e0d7c4;
+      --color-border-strong: #c8bda6;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 40px;
+      --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+                   "Apple Color Emoji", "Segoe UI Emoji";
+      --shadow-sm: 0 1px 2px rgba(42, 30, 18, 0.06);
+      --shadow-md: 0 4px 12px rgba(42, 30, 18, 0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-base);
+      line-height: 1.65;
+      color: var(--color-text);
+      background-color: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: var(--space-lg) var(--space-md) var(--space-xl);
+    }
+
+    header.doc-header {
+      text-align: center;
+      padding: var(--space-lg) 0 var(--space-md);
+      border-bottom: 2px solid var(--color-border);
+      margin-bottom: var(--space-lg);
+    }
+
+    .doc-header .logo {
+      max-width: 380px;
+      width: 100%;
+      height: auto;
+      margin: 0 auto var(--space-md);
+      display: block;
+    }
+
+    .doc-header h1 {
+      font-size: 1.75rem;
+      color: var(--color-primary);
+      margin: 0 0 var(--space-xs);
+      letter-spacing: -0.01em;
+    }
+
+    .doc-header .doc-subtitle {
+      color: var(--color-text-muted);
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .doc-nav {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg);
+      margin-bottom: var(--space-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .doc-nav h2 {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      margin: 0 0 var(--space-sm);
+    }
+
+    .doc-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm) var(--space-md);
+    }
+
+    .doc-nav a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9375rem;
+    }
+
+    .doc-nav a:hover,
+    .doc-nav a:focus-visible {
+      text-decoration: underline;
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    section.doc-section {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--color-primary);
+    }
+
+    section.doc-section h2 {
+      font-size: 1.25rem;
+      color: var(--color-primary);
+      margin: 0 0 var(--space-md);
+      padding-bottom: var(--space-xs);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    section.doc-section h3 {
+      font-size: 1rem;
+      color: var(--color-brown);
+      margin: var(--space-md) 0 var(--space-xs);
+    }
+
+    section.doc-section p {
+      margin: 0 0 var(--space-md);
+    }
+
+    section.doc-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    dl.ficha {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      margin: 0;
+    }
+
+    @media (min-width: 600px) {
+      dl.ficha {
+        grid-template-columns: 200px 1fr;
+        column-gap: var(--space-lg);
+      }
+    }
+
+    dl.ficha dt {
+      font-weight: 700;
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      align-self: start;
+    }
+
+    dl.ficha dd {
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    .ref-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .ref-list li {
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .ref-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .ref-list li:first-child {
+      padding-top: 0;
+    }
+
+    .ref-list .ref-title {
+      font-weight: 700;
+      color: var(--color-text);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+
+    .ref-list .ref-meta {
+      color: var(--color-text-muted);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    .ref-list .ref-link {
+      color: var(--color-primary);
+      word-break: break-all;
+    }
+
+    .callout {
+      background-color: var(--color-surface-alt);
+      border-left: 4px solid var(--color-accent);
+      border-radius: var(--radius-md);
+      padding: var(--space-md) var(--space-lg);
+      margin: var(--space-md) 0;
+      font-size: 0.9375rem;
+    }
+
+    .callout strong {
+      color: var(--color-brown);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background-color: var(--color-surface-alt);
+      border: 1px solid var(--color-border-strong);
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-left: var(--space-sm);
+      vertical-align: middle;
+    }
+
+    .badge-lgpd {
+      background-color: rgba(47, 93, 58, 0.12);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    a {
+      color: var(--color-primary);
+    }
+
+    a:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    .doc-footer {
+      text-align: center;
+      padding: var(--space-lg) var(--space-md);
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--color-border);
+      margin-top: var(--space-xl);
+    }
+
+    .doc-footer .back-link {
+      display: inline-block;
+      margin-bottom: var(--space-sm);
+      font-weight: 700;
+    }
+
+    @media print {
+      body { background-color: #ffffff; }
+      section.doc-section {
+        box-shadow: none;
+        border: 1px solid #cccccc;
+        page-break-inside: avoid;
+      }
+      .doc-nav { display: none; }
+      a { color: #000000; }
+      a::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        color: #555555;
+      }
+      .doc-header .logo { max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <header class="doc-header">
+      <img class="logo" src="../assets/images/logo.svg"
+           alt="Desafio do Cafezal — Manejo de Cafezais em Produção">
+      <h1>Referências e Ficha Técnica</h1>
+      <p class="doc-subtitle">Documento complementar do Livro Digital Interativo</p>
+    </header>
+
+    <nav class="doc-nav" aria-label="Sumário do documento">
+      <h2>Sumário</h2>
+      <ul>
+        <li><a href="#ficha-tecnica">Ficha técnica</a></li>
+        <li><a href="#transparencia-ia">Transparência sobre IA</a></li>
+        <li><a href="#base-tecnica">Base técnica</a></li>
+        <li><a href="#sumario-manual">Sumário do manual</a></li>
+        <li><a href="#referencias">Referências bibliográficas</a></li>
+        <li><a href="#licencas">Licenças e créditos</a></li>
+        <li><a href="#acessibilidade-doc">Acessibilidade</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+
+    <section class="doc-section" id="ficha-tecnica">
+      <h2>Ficha técnica</h2>
+      <dl class="ficha">
+        <dt>Título</dt>
+        <dd>Desafio do Cafezal</dd>
+
+        <dt>Subtítulo</dt>
+        <dd>Manejo de Cafezais em Produção</dd>
+
+        <dt>Formato</dt>
+        <dd>Livro Digital Interativo (LDI) gamificado</dd>
+
+        <dt>Autor e responsável</dt>
+        <dd>Dirceu Nogueira de Sales Duarte Junior</dd>
+
+        <dt>Apoio no desenvolvimento</dt>
+        <dd>
+          Inteligência Artificial generativa, utilizada como ferramenta de apoio à ideação,
+          organização, redação, programação, revisão e desenvolvimento da experiência interativa.
+        </dd>
+
+        <dt>Base técnica</dt>
+        <dd>
+          Manual do Café – Manejo de Cafezais em Produção. EMATER-MG, 2016. 72 p.
+        </dd>
+
+        <dt>Tecnologias</dt>
+        <dd>
+          HTML5, CSS3, JavaScript, Web Speech API, Web Audio API, LocalStorage e recursos
+          de acessibilidade digital.
+        </dd>
+
+        <dt>Responsabilidade pelo conteúdo</dt>
+        <dd>
+          A seleção das fontes, a definição dos objetivos pedagógicos, as decisões de conteúdo,
+          a validação das informações e a responsabilidade pelo produto final permanecem sob
+          responsabilidade do autor.
+        </dd>
+
+        <dt>Versão</dt>
+        <dd>1.0.0</dd>
+      </dl>
+    </section>
+
+    <section class="doc-section" id="transparencia-ia">
+      <h2>Transparência sobre o uso de Inteligência Artificial</h2>
+
+      <p>
+        Ferramentas de Inteligência Artificial generativa foram utilizadas como apoio em
+        etapas de ideação, organização, redação, programação, revisão e desenvolvimento
+        deste Livro Digital Interativo.
+      </p>
+
+      <p>
+        A autoria, a curadoria, a validação das informações e a responsabilidade final pelo
+        produto permanecem integralmente com o autor do projeto,
+        <strong>Dirceu Nogueira de Sales Duarte Junior</strong>.
+      </p>
+
+      <div class="callout">
+        <strong>Importante:</strong> o conteúdo técnico foi baseado no Manual do Café –
+        Manejo de Cafezais em Produção (EMATER-MG, 2016). Recomendações agronômicas
+        específicas devem ser sempre validadas por profissional habilitado antes de
+        qualquer aplicação em campo.
+      </div>
+    </section>
+
+    <section class="doc-section" id="base-tecnica">
+      <h2>Base técnica</h2>
+      <p>
+        Todo o conteúdo agronômico do jogo foi redigido a partir do
+        <strong>Manual do Café – Manejo de Cafezais em Produção</strong>, publicado pela
+        Empresa de Assistência Técnica e Extensão Rural do Estado de Minas Gerais
+        (EMATER-MG) em 2016.
+      </p>
+      <p>
+        O manual está disponível em formato PDF no site oficial da EMATER-MG. Autores da
+        publicação (todos engenheiros agrônomos, exceto o último, técnico agrícola):
+        Carlos Magno de Mesquita, João Eudes de Rezende, Julian Silva Carvalho,
+        Marcos Antônio Fabri Júnior, Niwton Castro Moraes, Pedro Tavares Dias,
+        Romulo Mathozinho de Carvalho e Willem Guilherme de Araújo.
+      </p>
+    </section>
+
+    <section class="doc-section" id="sumario-manual">
+      <h2>Sumário do manual (capítulos utilizados)</h2>
+      <ol>
+        <li>Amostragem de Solos — p. 7–9</li>
+        <li>Amostragem Foliar — p. 10</li>
+        <li>Nutrição Mineral do Cafeeiro — p. 11–23</li>
+        <li>Fertilidade do Solo — p. 24–26</li>
+        <li>Calagem e Gessagem para Cafezais em Produção — p. 27–41</li>
+        <li>Adubação do Cafeeiro — p. 42–53</li>
+        <li>Poda do Cafeeiro — p. 54–65</li>
+        <li>Manejo do Mato em Cafezais — p. 66–68</li>
+        <li>Considerações Finais — p. 69</li>
+      </ol>
+    </section>
+
+    <section class="doc-section" id="referencias">
+      <h2>Referências bibliográficas</h2>
+      <ul class="ref-list">
+        <li>
+          <span class="ref-title">
+            MESQUITA, Carlos Magno de; REZENDE, João Eudes de;
+            CARVALHO, Julian Silva; FABRI JÚNIOR, Marcos Antônio;
+            MORAES, Niwton Castro; DIAS, Pedro Tavares;
+            CARVALHO, Romulo Mathozinho de; ARAÚJO, Willem Guilherme de.
+          </span>
+          <span class="ref-meta">
+            <em>Manual do café: manejo de cafezais em produção</em>.
+            Belo Horizonte: EMATER-MG, 2016. 72 p. il.
+            CDU: 633.73(021).
+          </span>
+        </li>
+        <li>
+          <span class="ref-title">
+            EMPRESA DE ASSISTÊNCIA TÉCNICA E EXTENSÃO RURAL DO ESTADO DE MINAS GERAIS (EMATER-MG).
+          </span>
+          <span class="ref-meta">
+            Site institucional e publicações técnicas. Belo Horizonte, MG.
+            Disponível em
+            <a class="ref-link" href="https://www.emater.mg.gov.br/"
+               target="_blank" rel="noopener noreferrer">
+              https://www.emater.mg.gov.br/
+            </a>.
+          </span>
+        </li>
+        <li>
+          <span class="ref-title">
+            EMPRESA BRASILEIRA DE PESQUISA AGROPECUÁRIA (Embrapa Café).
+          </span>
+          <span class="ref-meta">
+            Referências técnicas complementares sobre a cultura do café.
+            Disponível em
+            <a class="ref-link" href="https://www.embrapa.br/cafe"
+               target="_blank" rel="noopener noreferrer">
+              https://www.embrapa.br/cafe
+            </a>.
+          </span>
+        </li>
+      </ul>
+
+      <div class="callout">
+        <strong>Nota:</strong> este documento lista as fontes utilizadas como base de
+        referência. Recomendações agronômicas específicas — dosagens, fórmulas,
+        produtos comerciais e cálculos — devem sempre ser validadas por profissional
+        habilitado, considerando as particularidades locais de cada propriedade.
+      </div>
+    </section>
+
+    <section class="doc-section" id="licencas">
+      <h2>Licenças e créditos dos recursos utilizados</h2>
+
+      <h3>Recursos próprios (criados para o projeto)</h3>
+      <ul>
+        <li><strong>Ícones SVG:</strong> <code>favicon.svg</code>, <code>seu-ze.svg</code>, <code>logo.svg</code> — desenhados especificamente para o Desafio do Cafezal, sem uso de material de terceiros.</li>
+        <li><strong>Efeitos sonoros:</strong> sintetizados em tempo real via Web Audio API — nenhum arquivo de áudio externo é utilizado.</li>
+        <li><strong>Voz:</strong> Web Speech API do próprio navegador — voz do sistema operacional do usuário.</li>
+        <li><strong>Ícones emoji:</strong> renderizados pelo sistema operacional do usuário, conforme a fonte nativa (Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji etc.).</li>
+      </ul>
+
+      <h3>Materiais de terceiros</h3>
+      <ul>
+        <li>Nenhuma imagem, ícone ou fonte tipográfica de terceiros é utilizada no projeto.</li>
+        <li>Nenhum framework, biblioteca ou CDN externo é carregado.</li>
+        <li>O conteúdo textual técnico deriva do manual da EMATER-MG, com citação adequada em cada missão (campo <code>source</code>) e neste documento.</li>
+      </ul>
+
+      <h3>Marcas e referências culturais</h3>
+      <ul>
+        <li>Referências a "Seu Zé do Café" e demais elementos narrativos são criações originais do projeto.</li>
+        <li>Referências a "farmar Aura", "subir de nível" e outras expressões da cultura digital juvenil são utilizadas como ambientação, sem relação comercial com qualquer marca.</li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="acessibilidade-doc">
+      <h2>Acessibilidade</h2>
+      <p>
+        O Desafio do Cafezal foi projetado com acessibilidade digital como requisito, não como
+        complemento. Estão implementados:
+      </p>
+      <ul>
+        <li>HTML semântico com <em>landmarks</em> (<code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>);</li>
+        <li>Navegação por teclado e foco visível em todos os controles;</li>
+        <li>Leitura em voz alta via Web Speech API (opcional);</li>
+        <li>Efeitos sonoros e som ambiente controláveis (opcionais);</li>
+        <li>Modo escuro e modo claro;</li>
+        <li>Alto contraste (preto, branco e amarelo);</li>
+        <li>Redução de animações (respeita <code>prefers-reduced-motion</code>);</li>
+        <li>Escala de tamanho de fonte em quatro níveis;</li>
+        <li>Regiões <code>aria-live</code> para anúncios dinâmicos;</li>
+        <li>Nenhuma informação transmitida apenas por cor;</li>
+        <li>Áreas de toque de no mínimo 44 × 44 px em dispositivos móveis.</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Sobre este documento:</strong> esta página também segue as boas práticas de
+        acessibilidade. Possui estrutura semântica, contraste adequado, foco visível,
+        navegação por teclado e um estilo de impressão que respeita o leitor.
+        <span class="badge">WCAG 2.1 AA</span>
+      </div>
+    </section>
+
+    <section class="doc-section" id="contato">
+      <h2>Contato e autoria</h2>
+      <dl class="ficha">
+        <dt>Autor</dt>
+        <dd>Dirceu Nogueira de Sales Duarte Junior</dd>
+
+        <dt>Projeto</dt>
+        <dd>Desafio do Cafezal — Manejo de Cafezais em Produção</dd>
+
+        <dt>Formato</dt>
+        <dd>Livro Digital Interativo (LDI) gamificado</dd>
+
+        <dt>Base técnica</dt>
+        <dd>Manual do Café – Manejo de Cafezais em Produção (EMATER-MG, 2016)</dd>
+      </dl>
+    </section>
+
+    <footer class="doc-footer">
+      <a class="back-link" href="../index.html">← Voltar ao Desafio do Cafezal</a>
+      <p>© 2016 EMATER-MG (conteúdo técnico). Direitos reservados ao autor do projeto.</p>
+      <p>Documento complementar — versão 1.0.0</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
