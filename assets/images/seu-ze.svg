@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 200 200"
+     role="img"
+     aria-label="Seu Zé do Café">
+  <title>Seu Zé do Café — personagem guia do Desafio do Cafezal</title>
+  <desc>Ilustração de um cafeicultor sorridente com chapéu de palha, camisa verde e ramo de café ao fundo.</desc>
+
+  <defs>
+    <!-- Gradiente sutil do fundo -->
+    <radialGradient id="bgGrad" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#faf5e6"/>
+      <stop offset="100%" stop-color="#ede3c9"/>
+    </radialGradient>
+
+    <!-- Gradiente do chapéu -->
+    <linearGradient id="hatGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c884"/>
+      <stop offset="100%" stop-color="#c99b4a"/>
+    </linearGradient>
+
+    <!-- Gradiente do rosto -->
+    <radialGradient id="faceGrad" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#eeb98b"/>
+      <stop offset="100%" stop-color="#d69a6a"/>
+    </radialGradient>
+
+    <!-- Gradiente da camisa -->
+    <linearGradient id="shirtGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a7048"/>
+      <stop offset="100%" stop-color="#2a5334"/>
+    </linearGradient>
+
+    <!-- Clip circular para o conteúdo -->
+    <clipPath id="circleClip">
+      <circle cx="100" cy="100" r="96"/>
+    </clipPath>
+  </defs>
+
+  <!-- ============================================================
+       FUNDO CIRCULAR
+       ============================================================ -->
+  <circle cx="100" cy="100" r="98" fill="#f5efe0"/>
+  <circle cx="100" cy="100" r="98" fill="none"
+          stroke="#2f5d3a" stroke-width="3.5"/>
+
+  <!-- ============================================================
+       CONTEÚDO RECORTADO PELO CÍRCULO
+       ============================================================ -->
+  <g clip-path="url(#circleClip)">
+
+    <!-- Fundo com gradiente sutil -->
+    <circle cx="100" cy="100" r="96" fill="url(#bgGrad)"/>
+
+    <!-- ============================================================
+         RAMO DE CAFÉ DECORATIVO (fundo, à esquerda)
+         ============================================================ -->
+    <g opacity="0.55" transform="translate(22 32) rotate(-18)">
+      <!-- Caule -->
+      <path d="M 0 0 Q 8 30, 4 70" stroke="#4a8b3f" stroke-width="2.5"
+            fill="none" stroke-linecap="round"/>
+      <!-- Folha superior -->
+      <path d="M 2 12 Q -8 8, -14 2 Q -6 -2, 2 12 Z" fill="#4a8b3f"/>
+      <!-- Folha do meio -->
+      <path d="M 6 32 Q 16 28, 22 22 Q 14 18, 6 32 Z" fill="#4a8b3f"/>
+      <!-- Frutos vermelhos (cereja de café) -->
+      <circle cx="-3" cy="22" r="3.5" fill="#c4423a"/>
+      <circle cx="-3" cy="22" r="3.5" fill="none" stroke="#8a2a25" stroke-width="0.6"/>
+      <circle cx="8" cy="44" r="3.5" fill="#c4423a"/>
+      <circle cx="8" cy="44" r="3.5" fill="none" stroke="#8a2a25" stroke-width="0.6"/>
+      <circle cx="-1" cy="46" r="3.5" fill="#c4423a"/>
+      <circle cx="-1" cy="46" r="3.5" fill="none" stroke="#8a2a25" stroke-width="0.6"/>
+    </g>
+
+    <!-- ============================================================
+         RAMO DE CAFÉ DECORATIVO (fundo, à direita)
+         ============================================================ -->
+    <g opacity="0.55" transform="translate(178 30) scale(-1 1) rotate(-18)">
+      <path d="M 0 0 Q 8 30, 4 70" stroke="#4a8b3f" stroke-width="2.5"
+            fill="none" stroke-linecap="round"/>
+      <path d="M 2 12 Q -8 8, -14 2 Q -6 -2, 2 12 Z" fill="#4a8b3f"/>
+      <path d="M 6 32 Q 16 28, 22 22 Q 14 18, 6 32 Z" fill="#4a8b3f"/>
+      <circle cx="-3" cy="22" r="3.5" fill="#c4423a"/>
+      <circle cx="-3" cy="22" r="3.5" fill="none" stroke="#8a2a25" stroke-width="0.6"/>
+      <circle cx="8" cy="44" r="3.5" fill="#c4423a"/>
+      <circle cx="8" cy="44" r="3.5" fill="none" stroke="#8a2a25" stroke-width="0.6"/>
+    </g>
+
+    <!-- ============================================================
+         OMBROS / CAMISA
+         ============================================================ -->
+    <path d="M 14 200 Q 14 152, 100 144 Q 186 152, 186 200 Z"
+          fill="url(#shirtGrad)"/>
+
+    <!-- Gola -->
+    <path d="M 78 146 L 100 178 L 122 146"
+          fill="none" stroke="#f5efe0" stroke-width="4.5"
+          stroke-linejoin="round" stroke-linecap="round"/>
+
+    <!-- Botão central -->
+    <circle cx="100" cy="186" r="2.5" fill="#c9a227"/>
+
+    <!-- ============================================================
+         PESCOÇO
+         ============================================================ -->
+    <path d="M 86 118 L 86 150 L 114 150 L 114 118 Z"
+          fill="#c98a5d"/>
+
+    <!-- Sombra do queixo no pescoço -->
+    <path d="M 88 118 Q 100 126, 112 118 L 112 124 Q 100 130, 88 124 Z"
+          fill="#b0754a" opacity="0.6"/>
+
+    <!-- ============================================================
+         ORELHAS
+         ============================================================ -->
+    <ellipse cx="58" cy="110" rx="7" ry="10" fill="#d69a6a"/>
+    <ellipse cx="142" cy="110" rx="7" ry="10" fill="#d69a6a"/>
+    <ellipse cx="58" cy="110" rx="4" ry="6" fill="#b0754a" opacity="0.5"/>
+    <ellipse cx="142" cy="110" rx="4" ry="6" fill="#b0754a" opacity="0.5"/>
+
+    <!-- ============================================================
+         ROSTO
+         ============================================================ -->
+    <ellipse cx="100" cy="106" rx="42" ry="46" fill="url(#faceGrad)"/>
+
+    <!-- Sobrancelhas -->
+    <path d="M 74 96 Q 83 91, 92 96"
+          stroke="#3a2510" stroke-width="3.5"
+          fill="none" stroke-linecap="round"/>
+    <path d="M 108 96 Q 117 91, 126 96"
+          stroke="#3a2510" stroke-width="3.5"
+          fill="none" stroke-linecap="round"/>
+
+    <!-- Olhos -->
+    <ellipse cx="83" cy="110" rx="5" ry="5.5" fill="#2a1e12"/>
+    <ellipse cx="117" cy="110" rx="5" ry="5.5" fill="#2a1e12"/>
+    <!-- Brilho dos olhos -->
+    <circle cx="84.5" cy="108.5" r="1.8" fill="#f5efe0"/>
+    <circle cx="118.5" cy="108.5" r="1.8" fill="#f5efe0"/>
+
+    <!-- Nariz -->
+    <path d="M 100 116 Q 95 126, 103 128"
+          stroke="#a86a45" stroke-width="2.5"
+          fill="none" stroke-linecap="round"/>
+
+    <!-- Bochechas -->
+    <circle cx="70" cy="124" r="7" fill="#d97a5a" opacity="0.35"/>
+    <circle cx="130" cy="124" r="7" fill="#d97a5a" opacity="0.35"/>
+
+    <!-- Bigode estilo cafeicultor -->
+    <path d="M 82 128 Q 100 124, 118 128
+             Q 115 138, 108 137
+             Q 100 133, 92 137
+             Q 85 138, 82 128 Z"
+          fill="#4a3018"/>
+
+    <!-- Sorriso -->
+    <path d="M 87 145 Q 100 157, 113 145"
+          stroke="#8a5a3a" stroke-width="3"
+          fill="none" stroke-linecap="round"/>
+
+    <!-- ============================================================
+         CHAPÉU DE PALHA
+         ============================================================ -->
+
+    <!-- Aba do chapéu (atrás do copo) -->
+    <ellipse cx="100" cy="78" rx="76" ry="13" fill="#b9893c"/>
+
+    <!-- Aba do chapéu (frente) -->
+    <ellipse cx="100" cy="76" rx="76" ry="13" fill="url(#hatGrad)"/>
+
+    <!-- Detalhe da aba: contorno -->
+    <ellipse cx="100" cy="76" rx="76" ry="13" fill="none"
+             stroke="#a4783a" stroke-width="1"/>
+
+    <!-- Faixa do chapéu (fita) -->
+    <path d="M 64 72 Q 100 82, 136 72 L 137 78 Q 100 88, 63 78 Z"
+          fill="#2f5d3a"/>
+
+    <!-- Copa do chapéu (dome) -->
+    <path d="M 60 72 Q 60 24, 100 24 Q 140 24, 140 72 Z"
+          fill="url(#hatGrad)"/>
+
+    <!-- Contorno da copa -->
+    <path d="M 60 72 Q 60 24, 100 24 Q 140 24, 140 72"
+          fill="none" stroke="#a4783a" stroke-width="1"/>
+
+    <!-- Textura do chapéu (linhas sutis) -->
+    <path d="M 68 50 Q 100 44, 132 50" stroke="#c99b4a" stroke-width="1"
+          fill="none" opacity="0.7"/>
+    <path d="M 66 60 Q 100 54, 134 60" stroke="#c99b4a" stroke-width="1"
+          fill="none" opacity="0.7"/>
+
+    <!-- ============================================================
+         FOLHA DE CAFÉ no chapéu (detalhe)
+         ============================================================ -->
+    <g transform="translate(124 44) rotate(28)">
+      <path d="M 0 0 Q 8 -6, 16 -2 Q 12 6, 0 0 Z" fill="#4a8b3f"/>
+      <path d="M 0 0 Q 8 -2, 16 -2" stroke="#2f5d3a" stroke-width="1"
+            fill="none" opacity="0.7"/>
+    </g>
+
+  </g>
+
+  <!-- ============================================================
+       CONTORNO EXTERNO (por cima do clip, para ficar nítido)
+       ============================================================ -->
+  <circle cx="100" cy="100" r="98" fill="none"
+          stroke="#2f5d3a" stroke-width="3.5"/>
+
+</svg>
