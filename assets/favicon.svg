@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     role="img"
+     aria-label="Desafio do Cafezal">
+  <title>Desafio do Cafezal</title>
+
+  <!-- Fundo arredondado -->
+  <rect x="2" y="2" width="60" height="60" rx="14"
+        fill="#f5efe0" stroke="#2f5d3a" stroke-width="3"/>
+
+  <!-- Folha brotando -->
+  <g transform="translate(32 22)">
+    <path d="M 0 -14 C 9 -10, 14 2, 7 12
+             C 0 6, -5 -4, 0 -14 Z"
+          fill="#4a8b3f"/>
+    <path d="M 0 -14 Q 4 -2, 7 12"
+          stroke="#2f5d3a" stroke-width="1.4"
+          fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Grão de café -->
+  <g transform="translate(32 40) rotate(-18)">
+    <ellipse cx="0" cy="0" rx="17" ry="12" fill="#6b4423"/>
+    <path d="M -13 0 Q -6 -6, 0 0 T 13 0"
+          stroke="#f5efe0" stroke-width="2.5"
+          fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
